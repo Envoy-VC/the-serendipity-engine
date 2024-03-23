@@ -1,16 +1,18 @@
-import { getFrameMetadata } from 'frog/next'
-import type { Metadata } from 'next'
-import Image from 'next/image'
+/** @format */
 
-import styles from './page.module.css'
+import { getFrameMetadata } from 'frog/next';
+import type { Metadata } from 'next';
+import Image from 'next/image';
+
+import styles from './page.module.css';
 
 export async function generateMetadata(): Promise<Metadata> {
   const frameTags = await getFrameMetadata(
-    `${process.env.VERCEL_URL || 'http://localhost:3000'}/api`,
-  )
+    `${process.env.VERCEL_URL || 'http://localhost:3000'}/api`
+  );
   return {
     other: frameTags,
-  }
+  };
 }
 
 export default function Home() {
@@ -25,7 +27,7 @@ export default function Home() {
           <p>
             Head to{' '}
             <a
-              href="/api/dev"
+              href='/api/dev'
               style={{ display: 'inline', fontWeight: 'semibold' }}
             >
               <code className={styles.code}>localhost:3000/api</code>
@@ -35,14 +37,14 @@ export default function Home() {
         </div>
         <div>
           <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href='https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
+            target='_blank'
+            rel='noopener noreferrer'
           >
             By{' '}
             <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
+              src='/vercel.svg'
+              alt='Vercel Logo'
               className={styles.vercelLogo}
               width={100}
               height={24}
@@ -55,8 +57,8 @@ export default function Home() {
       <div className={styles.center}>
         <Image
           className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
+          src='/next.svg'
+          alt='Next.js Logo'
           width={180}
           height={37}
           priority
@@ -65,10 +67,10 @@ export default function Home() {
 
       <div className={styles.grid}>
         <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          href='https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
           className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+          target='_blank'
+          rel='noopener noreferrer'
         >
           <h2>
             Docs <span>-&gt;</span>
@@ -77,10 +79,10 @@ export default function Home() {
         </a>
 
         <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          href='https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
           className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+          target='_blank'
+          rel='noopener noreferrer'
         >
           <h2>
             Learn <span>-&gt;</span>
@@ -89,10 +91,10 @@ export default function Home() {
         </a>
 
         <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          href='https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
           className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+          target='_blank'
+          rel='noopener noreferrer'
         >
           <h2>
             Templates <span>-&gt;</span>
@@ -101,10 +103,10 @@ export default function Home() {
         </a>
 
         <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+          href='https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
           className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+          target='_blank'
+          rel='noopener noreferrer'
         >
           <h2>
             Deploy <span>-&gt;</span>
@@ -115,5 +117,5 @@ export default function Home() {
         </a>
       </div>
     </main>
-  )
+  );
 }

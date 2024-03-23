@@ -1,24 +1,33 @@
-/** @jsxImportSource frog/jsx */
-
-import { Button, Frog, TextInput } from 'frog'
-import { devtools } from 'frog/dev'
-// import { neynar } from 'frog/hubs'
-import { handle } from 'frog/next'
-import { serveStatic } from 'frog/serve-static'
+import { addOpenFrameTags } from '@/app/middlewares/open-frames';
+import { Button, Frog, TextInput } from 'frog';
+import { devtools } from 'frog/dev';
+import { handle } from 'frog/next';
+import { serveStatic } from 'frog/serve-static';
 
 const app = new Frog({
   assetsPath: '/',
   basePath: '/api',
-  // Supply a Hub to enable frame verification.
-  // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
-})
+});
 
-// Uncomment to use Edge Runtime
-// export const runtime = 'edge'
+// Middleware to Support Open Frames Specification
+app.use(async (c, next) => {
+  await next();
+  const isFrame = c.res.headers.get('content-type')?.includes('html') ?? false;
+  if (isFrame) {
+    let html = await c.res.text();
+    const newHtml = await addOpenFrameTags(html);
+    console.log(newHtml);
+    c.res = new Response(newHtml, {
+      headers: {
+        'content-type': 'text/html',
+      },
+    });
+  }
+});
 
 app.frame('/', (c) => {
-  const { buttonValue, inputText, status } = c
-  const fruit = inputText || buttonValue
+  const { buttonValue, inputText, status } = c;
+  const fruit = inputText || buttonValue;
   return c.res({
     image: (
       <div
@@ -57,16 +66,16 @@ app.frame('/', (c) => {
       </div>
     ),
     intents: [
-      <TextInput placeholder="Enter custom fruit..." />,
-      <Button value="apples">Apples</Button>,
-      <Button value="oranges">Oranges</Button>,
-      <Button value="bananas">Bananas</Button>,
+      <TextInput placeholder='Enter custom fruit...' />,
+      <Button value='apples'>Apples</Button>,
+      <Button value='oranges'>Oranges</Button>,
+      <Button value='bananas'>Bananas</Button>,
       status === 'response' && <Button.Reset>Reset</Button.Reset>,
     ],
-  })
-})
+  });
+});
 
-devtools(app, { serveStatic })
+devtools(app, { serveStatic });
 
-export const GET = handle(app)
-export const POST = handle(app)
+export const GET = handle(app);
+export const POST = handle(app);
