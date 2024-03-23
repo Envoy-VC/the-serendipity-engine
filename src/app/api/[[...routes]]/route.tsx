@@ -1,33 +1,22 @@
-import { addOpenFrameTags } from '@/app/middlewares/open-frames';
+/* eslint-disable react/jsx-key */
+/** @jsxImportSource frog/jsx */
 import { Button, Frog, TextInput } from 'frog';
 import { devtools } from 'frog/dev';
 import { handle } from 'frog/next';
 import { serveStatic } from 'frog/serve-static';
+
+import { openFramesMiddleware } from '~/middlewares/open-frames';
 
 const app = new Frog({
   assetsPath: '/',
   basePath: '/api',
 });
 
-// Middleware to Support Open Frames Specification
-app.use(async (c, next) => {
-  await next();
-  const isFrame = c.res.headers.get('content-type')?.includes('html') ?? false;
-  if (isFrame) {
-    let html = await c.res.text();
-    const newHtml = await addOpenFrameTags(html);
-    console.log(newHtml);
-    c.res = new Response(newHtml, {
-      headers: {
-        'content-type': 'text/html',
-      },
-    });
-  }
-});
+app.use(openFramesMiddleware);
 
 app.frame('/', (c) => {
   const { buttonValue, inputText, status } = c;
-  const fruit = inputText || buttonValue;
+  const fruit = inputText ?? buttonValue;
   return c.res({
     image: (
       <div

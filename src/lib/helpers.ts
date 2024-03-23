@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
 
-const mapping: Record<string, string> = {
+export const openFramesMapping: Record<string, string> = {
   'fc:frame': 'of:version',
   'fc:frame:image': 'of:image',
   'fc:frame:image:aspect_ratio': 'of:image:aspect_ratio',
@@ -30,7 +30,7 @@ export const addOpenFrameTags = async (html: string) => {
     const farcasterContent = $(element).attr('content');
 
     // Check if there's a corresponding Open Frames property
-    const openFramesProperty = mapping[farcasterProperty];
+    const openFramesProperty = openFramesMapping[farcasterProperty];
     if (openFramesProperty) {
       // Create a new meta tag with the corresponding Open Frames property
       const newMetaTag = $('<meta>')
