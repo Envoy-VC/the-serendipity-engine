@@ -19,6 +19,7 @@ const BULK_GET_USERS = `
       Social {
         userId
         userAddress
+        profileName
         profileImageContentValue {
           image {
             original

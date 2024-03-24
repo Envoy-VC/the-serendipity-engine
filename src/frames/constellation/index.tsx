@@ -19,7 +19,7 @@ export const Constellation: FrameHandler<
   '/constellation',
   BlankInput
 > = async (c) => {
-  const fid = c.frameData?.fid ?? 0;
+  const fid = c.frameData?.fid ?? 1;
 
   // Get the personalized engagement scores for the user
   const res = await getPersonalizedEngagementScores({
@@ -27,6 +27,7 @@ export const Constellation: FrameHandler<
   });
 
   const ids = res?.result?.map((r) => String(r.fid)) ?? [];
+  ids.push(String(fid));
 
   // Get all user profiles
   const users = (await bulkGetFarcasterUsers(ids)) ?? [];
@@ -44,8 +45,8 @@ export const Constellation: FrameHandler<
   });
 
   const userImage =
-    (await bulkGetFarcasterUsers([String(fid)]))?.at(0)
-      ?.profileImageContentValue.image?.original ?? null;
+    users.filter((u) => u.userId === String(fid)).at(0)
+      ?.profileImageContentValue?.image?.original ?? null;
 
   return c.res({
     image: (
@@ -95,44 +96,32 @@ interface UserProps extends FarcasterSocial {
   index: number;
 }
 
-const UserNode = ({ profileImageContentValue, index }: UserProps) => {
+const UserNode = ({ profileName, index }: UserProps) => {
   const { x, y } = calculatePosition(index);
 
-  const imageUrl = profileImageContentValue.image
-    ? profileImageContentValue.image.original
-    : null;
+  // random hex color array
+  const colors = [
+    '#ffffff',
+    '#f8d7da',
+    '#d4edda',
+    '#cce5ff',
+    '#d1ecf1',
+    '#f8d7da',
+    '#fff3cd',
+  ];
 
-  if (imageUrl) {
-    return (
-      <div
-        tw='absolute flex items-center justify-center rounded-full'
-        style={{
-          top: `${y + 295}px`,
-          left: `${x + 580}px`,
-        }}
-      >
-        <img
-          src={imageUrl}
-          alt='Avatar'
-          tw='h-[85px] w-[85px] rounded-full'
-          style={{
-            objectFit: 'cover',
-          }}
-          width={85}
-          height={85}
-        />
-      </div>
-    );
-  } else {
-    return (
-      <div
-        tw='absolute flex items-center justify-center rounded-full bg-gray-500 w-[85px] h-[85px]
-        '
-        style={{
-          top: `${y + 315}px`,
-          left: `${x + 580}px`,
-        }}
-      ></div>
-    );
-  }
+  const randomColor = colors[getRandom(0, colors.length - 1)];
+
+  return (
+    <div
+      tw='text-black text-xl absolute flex items-center justify-center rounded-2xl p-2'
+      style={{
+        top: `${y + 315}px`,
+        left: `${x + 580}px`,
+        backgroundColor: randomColor,
+      }}
+    >
+      {profileName}
+    </div>
+  );
 };
