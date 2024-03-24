@@ -4,7 +4,7 @@ import { devtools } from 'frog/dev';
 import { handle } from 'frog/next';
 import { serveStatic } from 'frog/serve-static';
 
-export const runtime = 'nodejs';
+export const runtime = 'edge';
 
 // Middlewares
 import { openFramesMiddleware } from '~/middlewares/open-frames';
