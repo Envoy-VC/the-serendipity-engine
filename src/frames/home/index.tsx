@@ -7,6 +7,9 @@ import { Button } from 'frog';
 
 export const Home: FrameHandler<Env, '/', BlankInput> = async (c) => {
   return c.res({
+    ogImage:
+      'https://storage.googleapis.com/ethglobal-api-production/projects/msp47/images/image.png?bustcache=1711289866278',
+    title: 'The Serendipity Engine',
     image: (
       <div
         style={{

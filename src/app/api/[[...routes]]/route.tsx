@@ -25,6 +25,7 @@ const app = new Frog<{ State: State }>({
     degreeCount: 0,
     pageToken: '',
   },
+
   async imageOptions() {
     const fontData = await fetch(
       new URL('../../../assets/Primus_SemiBold.otf', import.meta.url)
