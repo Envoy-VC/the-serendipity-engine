@@ -1,3 +1,4 @@
+/** @jsxImportSource frog/jsx */
 import type { MiddlewareHandler } from 'hono';
 import type { Env } from 'frog';
 

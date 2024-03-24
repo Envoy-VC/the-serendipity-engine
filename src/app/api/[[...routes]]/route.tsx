@@ -9,6 +9,7 @@ import { openFramesMiddleware } from '~/middlewares/open-frames';
 
 // Frames
 import { Home } from '~/frames';
+import { Constellation } from '~/frames';
 
 export const runtime = 'edge';
 
@@ -34,6 +35,7 @@ const app = new Frog({
 app.use(openFramesMiddleware);
 
 app.frame('/', Home);
+app.frame('/constellation', Constellation);
 
 devtools(app, { serveStatic });
 
