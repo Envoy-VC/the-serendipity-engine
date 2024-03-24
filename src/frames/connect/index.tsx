@@ -14,9 +14,7 @@ import type { FarcasterUser, LensSocial } from '~/types/airstack';
 export const Connect: FrameHandler<FrameEnv, '/connect', BlankInput> = async (
   c
 ) => {
-  const res = await getUserSocials(
-    '0xBF4979305B43B0eB5Bb6a5C67ffB89408803d3e1'
-  );
+  const res = await getUserSocials(c.previousState.randomAddress ?? '');
   const lens = res?.lens ?? null;
   const farcaster = res?.farcaster ?? null;
   const xmtp = res?.xmtp ?? null;
