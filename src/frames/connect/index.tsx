@@ -19,8 +19,6 @@ export const Connect: FrameHandler<FrameEnv, '/connect', BlankInput> = async (
   const farcaster = res?.farcaster ?? null;
   const xmtp = res?.xmtp ?? null;
 
-  console.log(farcaster);
-
   return c.res({
     image: (
       <div
