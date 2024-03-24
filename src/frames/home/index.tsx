@@ -23,13 +23,17 @@ export const Home: FrameHandler<Env, '/', BlankInput> = async (c) => {
           width: '100%',
         }}
       >
-        <div tw='text-white text-[4rem] mt-[3rem] py-[8rem]'>Get Started</div>
+        <div tw='text-white text-[4rem] py-[2rem]'>The Serendipity Engine</div>
+        <div tw='text-white text-[2rem] mx-[1rem]'>
+          Turn chance encounters into meaningful connections. Let serendipity
+          guide you through the Farcasterverse.
+        </div>
       </div>
     ),
 
     intents: [
       <Button value='' action='/constellation'>
-        Get Started
+        Explore Your Farcasterverse 🔮
       </Button>,
     ],
   });

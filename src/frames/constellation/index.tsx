@@ -8,6 +8,8 @@ import { Button } from 'frog';
 import { getPersonalizedEngagementScores } from '~/services/openrank';
 
 import { bulkGetFarcasterUsers } from '~/services/airstack';
+import { calculatePosition } from '~/lib/helpers';
+
 import type { FarcasterSocial } from '~/types/airstack';
 
 export const Constellation: FrameHandler<
@@ -67,7 +69,10 @@ export const Constellation: FrameHandler<
       </div>
     ),
 
-    intents: [<Button.Reset>Reset</Button.Reset>],
+    intents: [
+      <Button value='random'>Meet Someone New! ✨</Button>,
+      <Button.Reset>⬅️ Back</Button.Reset>,
+    ],
   });
 };
 
@@ -75,37 +80,7 @@ interface UserProps extends FarcasterSocial {
   index: number;
 }
 
-const calculatePosition = (index: number) => {
-  let position = 0;
-  let elementPositionInRing = 0;
-  if (index < 8) {
-    position = 1;
-    elementPositionInRing = index - 1;
-  } else if (index >= 8 && index < 20) {
-    position = 2;
-    elementPositionInRing = index - 9;
-  } else if (index >= 20 && index < 36) {
-    position = 3;
-    elementPositionInRing = index - 21;
-  } else if (index >= 36 && index < 56) {
-    position = 4;
-    elementPositionInRing = index - 37;
-  }
-
-  const ringSize = 8 + 4 * (position - 1); // eg - 8, 12, 16, 20, 24
-  const angle = (elementPositionInRing / ringSize) * (2 * Math.PI);
-
-  const rx = 80 + position * 170;
-  const ry = 60 + position * 80;
-
-  const rotate = (position - 1) * 13;
-  const x = Math.cos(angle + rotate) * rx;
-  const y = Math.sin(angle + rotate) * ry;
-
-  return { x, y };
-};
-
-const UserNode = ({ profileImageContentValue, index, userId }: UserProps) => {
+const UserNode = ({ profileImageContentValue, index }: UserProps) => {
   const { x, y } = calculatePosition(index);
 
   const imageUrl = profileImageContentValue.image
@@ -139,7 +114,7 @@ const UserNode = ({ profileImageContentValue, index, userId }: UserProps) => {
         tw='absolute flex items-center justify-center rounded-full bg-gray-500 w-[85px] h-[85px]
         '
         style={{
-          top: `${y + 295}px`,
+          top: `${y + 315}px`,
           left: `${x + 580}px`,
         }}
       ></div>

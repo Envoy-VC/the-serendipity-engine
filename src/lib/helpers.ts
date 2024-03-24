@@ -51,3 +51,34 @@ export const addOpenFrameTags = async (html: string) => {
   // Return the modified HTML string
   return $.html();
 };
+
+export const calculatePosition = (index: number) => {
+  let position = 0;
+  let elementPositionInRing = 0;
+  if (index < 8) {
+    position = 1;
+    elementPositionInRing = index - 1;
+  } else if (index >= 8 && index < 20) {
+    position = 2;
+    elementPositionInRing = index - 9;
+  } else if (index >= 20 && index < 36) {
+    position = 3;
+    elementPositionInRing = index - 21;
+  } else if (index >= 36 && index < 56) {
+    position = 4;
+    elementPositionInRing = index - 37;
+  }
+
+  const ringSize = 8 + 4 * (position - 1); // eg - 8, 12, 16, 20, 24, 32
+  const angle = (elementPositionInRing / ringSize) * (2 * Math.PI);
+
+  // Place elements in a ellipse
+  const rx = 120 + position * 170;
+  const ry = 120 + position * 80;
+
+  const rotate = (position - 1) * 13;
+  const x = Math.cos(angle + rotate) * rx;
+  const y = Math.sin(angle + rotate) * ry;
+
+  return { x, y };
+};

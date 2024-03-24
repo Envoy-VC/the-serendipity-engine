@@ -17,7 +17,7 @@ interface PersonalizedEngagementScoresResponse {
 export const getPersonalizedEngagementScores = async ({
   fids,
   k = 2,
-  limit = 56,
+  limit = 40,
 }: PersonalizedEngagementScoresProps) => {
   try {
     const res = (await fetch(
