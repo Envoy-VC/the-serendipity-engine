@@ -13,7 +13,6 @@ import { calculatePosition, getRandom } from '~/lib/helpers';
 import type { FarcasterSocial } from '~/types/airstack';
 
 import type { FrameEnv } from '~/types';
-import { sendAnalytics } from '~/services/pinata';
 
 export const Constellation: FrameHandler<
   FrameEnv,
@@ -21,12 +20,6 @@ export const Constellation: FrameHandler<
   BlankInput
 > = async (c) => {
   const fid = c.frameData?.fid ?? 0;
-
-  // send analytics
-  await sendAnalytics({
-    custom_id: 'constellation',
-    context: c,
-  });
 
   // Get the personalized engagement scores for the user
   const res = await getPersonalizedEngagementScores({

@@ -4,6 +4,8 @@ import { devtools } from 'frog/dev';
 import { handle } from 'frog/next';
 import { serveStatic } from 'frog/serve-static';
 
+export const runtime = 'nodejs';
+
 // Middlewares
 import { openFramesMiddleware } from '~/middlewares/open-frames';
 
@@ -16,15 +18,9 @@ import { Connect } from '~/frames';
 // State
 import type { State } from '~/types';
 
-// Hub
-import { pinata } from 'frog/hubs';
-
-export const runtime = 'edge';
-
 const app = new Frog<{ State: State }>({
   assetsPath: '/',
   basePath: '/api',
-  //hub: pinata(),
   initialState: {
     degreeCount: 0,
     pageToken: '',

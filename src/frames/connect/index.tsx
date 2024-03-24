@@ -14,8 +14,6 @@ import type { FarcasterUser, LensSocial } from '~/types/airstack';
 export const Connect: FrameHandler<FrameEnv, '/connect', BlankInput> = async (
   c
 ) => {
-  const previousState = c.previousState;
-
   const res = await getUserSocials(
     '0xBF4979305B43B0eB5Bb6a5C67ffB89408803d3e1'
   );
