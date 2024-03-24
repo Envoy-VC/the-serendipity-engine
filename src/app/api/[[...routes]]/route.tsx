@@ -11,11 +11,17 @@ import { openFramesMiddleware } from '~/middlewares/open-frames';
 import { Home } from '~/frames';
 import { Constellation } from '~/frames';
 
+// State
+import type { State } from '~/types';
+
 export const runtime = 'edge';
 
-const app = new Frog({
+const app = new Frog<{ State: State }>({
   assetsPath: '/',
   basePath: '/api',
+  initialState: {
+    degreeCount: 0,
+  },
   async imageOptions() {
     const fontData = await fetch(
       new URL('../../../assets/Primus_SemiBold.otf', import.meta.url)
