@@ -4,7 +4,8 @@ import { devtools } from 'frog/dev';
 import { handle } from 'frog/next';
 import { serveStatic } from 'frog/serve-static';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
+import fs from 'fs/promises';
 
 // Middlewares
 import { openFramesMiddleware } from '~/middlewares/open-frames';
@@ -26,9 +27,7 @@ const app = new Frog<{ State: State }>({
     pageToken: '',
   },
   async imageOptions() {
-    const fontData = await fetch(
-      new URL('../../../assets/Primus_SemiBold.otf', import.meta.url)
-    ).then((res) => res.arrayBuffer());
+    const fontData = await fs.readFile('public/Primus_SemiBold.otf');
     return {
       fonts: [
         {
