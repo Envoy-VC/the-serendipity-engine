@@ -1,24 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/jsx-key */
 /** @jsxImportSource frog/jsx */
-import type { Env, FrameHandler } from 'frog';
+import type { FrameHandler } from 'frog';
 import type { BlankInput } from 'hono/types';
 
 import { Button } from 'frog';
 import { getPersonalizedEngagementScores } from '~/services/openrank';
 
 import { bulkGetFarcasterUsers } from '~/services/airstack';
-import { calculatePosition } from '~/lib/helpers';
+import { calculatePosition, getRandom } from '~/lib/helpers';
 
 import type { FarcasterSocial } from '~/types/airstack';
 
+import type { FrameEnv } from '~/types';
+
 export const Constellation: FrameHandler<
-  Env,
+  FrameEnv,
   '/constellation',
   BlankInput
 > = async (c) => {
-  const frameData = c.frameData;
-  const fid = frameData?.fid ?? 0;
+  const fid = c.frameData?.fid ?? 0;
 
   // Get the personalized engagement scores for the user
   const res = await getPersonalizedEngagementScores({
@@ -29,6 +30,14 @@ export const Constellation: FrameHandler<
 
   // Get all user profiles
   const users = (await bulkGetFarcasterUsers(ids)) ?? [];
+
+  // get random user
+  const randomUser = getRandom(0, users.length);
+  const { deriveState } = c;
+  deriveState((prev) => {
+    prev.degreeCount = 0;
+    prev.randomUserAddress = users[randomUser]!.userAddress;
+  });
 
   const userImage =
     (await bulkGetFarcasterUsers([String(fid)]))?.at(0)
@@ -70,7 +79,9 @@ export const Constellation: FrameHandler<
     ),
 
     intents: [
-      <Button value='random'>Meet Someone New! ✨</Button>,
+      <Button value='random' action='/user-post'>
+        Meet Someone New! ✨
+      </Button>,
       <Button.Reset>⬅️ Back</Button.Reset>,
     ],
   });

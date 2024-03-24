@@ -10,6 +10,7 @@ import { openFramesMiddleware } from '~/middlewares/open-frames';
 // Frames
 import { Home } from '~/frames';
 import { Constellation } from '~/frames';
+import { UserPost } from '~/frames';
 
 // State
 import type { State } from '~/types';
@@ -42,6 +43,7 @@ app.use(openFramesMiddleware);
 
 app.frame('/', Home);
 app.frame('/constellation', Constellation);
+app.frame('/user-post', UserPost);
 
 devtools(app, { serveStatic });
 
