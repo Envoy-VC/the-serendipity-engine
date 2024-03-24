@@ -28,6 +28,8 @@ export const addOpenFrameTags = async (html: string) => {
   $('meta[property^="fc:frame"]').each((index, element) => {
     const farcasterProperty = $(element).attr('property') ?? '';
     const farcasterContent = $(element).attr('content');
+    const farcasterDataType = $(element).attr('data-type');
+    const farcasterDataValue = $(element).attr('data-value');
 
     // Check if there's a corresponding Open Frames property
     const openFramesProperty = openFramesMapping[farcasterProperty];
@@ -36,6 +38,13 @@ export const addOpenFrameTags = async (html: string) => {
       const newMetaTag = $('<meta>')
         .attr('property', openFramesProperty)
         .attr('content', farcasterContent);
+
+      if (farcasterDataType) {
+        newMetaTag.attr('data-type', farcasterDataType);
+      }
+      if (farcasterDataValue) {
+        newMetaTag.attr('data-value', farcasterDataValue);
+      }
 
       // Append the new meta tag to the head
       $('head').append(newMetaTag);

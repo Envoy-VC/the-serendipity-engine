@@ -1,6 +1,9 @@
 import { env } from '~/env';
 
-import type { FarcasterSocialResponse } from '~/types/airstack';
+import type {
+  FarcasterSocialResponse,
+  UserSocialsResponse,
+} from '~/types/airstack';
 
 const AIRSTACK_API_URL = 'https://api.airstack.xyz/graphql';
 const AIRSTACK_API_KEY = env.AIRSTACK_API_KEY;
@@ -41,7 +44,74 @@ export const bulkGetFarcasterUsers = async (ids: string[]) => {
       body: JSON.stringify({ query: BULK_GET_USERS, variables: { fids } }),
     }).then((res) => res.json())) as FarcasterSocialResponse;
 
-    //console.log(res.data.Socials.Social);
     return res.data.Socials.Social;
+  } catch (error) {}
+};
+
+const GET_USER_SOCIALS = `
+  query GetUserSocials($address: Address!, $id: Identity!) {
+    Socials(
+      input: {
+        filter: {
+          userAssociatedAddresses: { _eq: $address }
+          dappName: { _in: [lens, farcaster] }
+        }
+        blockchain: ethereum
+      }
+    ) {
+      Social {
+        dappName
+        profileImage
+        profileHandleNft {
+          contentValue {
+            image {
+              original
+            }
+          }
+        }
+        profileDisplayName
+        profileHandle
+        profileImageContentValue {
+          image {
+            original
+          }
+        }
+      }
+    }
+    XMTPs(input: { blockchain: ALL, filter: { owner: { _eq: $id } } }) {
+      XMTP {
+        isXMTPEnabled
+      }
+    }
+  }
+`;
+
+export const getUserSocials = async (address: string) => {
+  try {
+    const res = (await fetch(AIRSTACK_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: AIRSTACK_API_KEY,
+      },
+      body: JSON.stringify({
+        query: GET_USER_SOCIALS,
+        variables: { address, id: address },
+      }),
+    }).then((res) => res.json())) as UserSocialsResponse;
+
+    const socials = res.data.Socials.Social;
+    const xmtp = res.data.XMTPs?.XMTP?.at(0) ?? null;
+
+    const lensSocials =
+      socials.filter((social) => social.dappName === 'lens').at(0) ?? null;
+    const farcasterSocials =
+      socials.filter((social) => social.dappName === 'farcaster').at(0) ?? null;
+
+    return {
+      lens: lensSocials,
+      farcaster: farcasterSocials,
+      xmtp,
+    };
   } catch (error) {}
 };
