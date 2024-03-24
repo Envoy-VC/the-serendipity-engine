@@ -13,6 +13,7 @@ import { calculatePosition, getRandom } from '~/lib/helpers';
 import type { FarcasterSocial } from '~/types/airstack';
 
 import type { FrameEnv } from '~/types';
+import { sendAnalytics } from '~/services/pinata';
 
 export const Constellation: FrameHandler<
   FrameEnv,
@@ -20,6 +21,12 @@ export const Constellation: FrameHandler<
   BlankInput
 > = async (c) => {
   const fid = c.frameData?.fid ?? 0;
+
+  // send analytics
+  await sendAnalytics({
+    custom_id: 'constellation',
+    context: c,
+  });
 
   // Get the personalized engagement scores for the user
   const res = await getPersonalizedEngagementScores({
@@ -32,11 +39,15 @@ export const Constellation: FrameHandler<
   const users = (await bulkGetFarcasterUsers(ids)) ?? [];
 
   // get random user
-  const randomUser = getRandom(0, users.length);
+  const randomNum = getRandom(0, users.length);
+  const randomUser = users[randomNum]!;
+
   const { deriveState } = c;
   deriveState((prev) => {
     prev.degreeCount = 0;
-    prev.randomUserAddress = users[randomUser]!.userAddress;
+    prev.randomFID = randomUser.userId;
+    prev.pageToken = '';
+    prev.randomAddress = randomUser.userAddress;
   });
 
   const userImage =

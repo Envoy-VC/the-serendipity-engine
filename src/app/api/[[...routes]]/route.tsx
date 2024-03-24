@@ -11,17 +11,23 @@ import { openFramesMiddleware } from '~/middlewares/open-frames';
 import { Home } from '~/frames';
 import { Constellation } from '~/frames';
 import { UserPost } from '~/frames';
+import { Connect } from '~/frames';
 
 // State
 import type { State } from '~/types';
+
+// Hub
+import { pinata } from 'frog/hubs';
 
 export const runtime = 'edge';
 
 const app = new Frog<{ State: State }>({
   assetsPath: '/',
   basePath: '/api',
+  //hub: pinata(),
   initialState: {
     degreeCount: 0,
+    pageToken: '',
   },
   async imageOptions() {
     const fontData = await fetch(
@@ -44,6 +50,7 @@ app.use(openFramesMiddleware);
 app.frame('/', Home);
 app.frame('/constellation', Constellation);
 app.frame('/user-post', UserPost);
+app.frame('/connect', Connect);
 
 devtools(app, { serveStatic });
 
