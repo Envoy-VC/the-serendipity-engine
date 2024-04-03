@@ -2149,7 +2149,7 @@ packages:
       typescript: 5.4.3
       valibot: 0.30.0
       viem: 2.8.18(typescript@5.4.3)(zod@3.22.4)
-      vite: 5.2.4(@types/node@20.11.30)
+      vite: 5.2.8(@types/node@20.11.30)
     transitivePeerDependencies:
       - '@types/node'
       - bufferutil
@@ -3826,8 +3826,8 @@ packages:
       - zod
     dev: false
 
-  /vite@5.2.4(@types/node@20.11.30):
-    resolution: {integrity: sha512-vjFghvHWidBTinu5TCymJk/lRHlR5ljqB83yugr0HA1xspUPdOZHqbqDLnZ8f9/jINrtFHTCYYyIUi+o+Q5iyg==}
+  /vite@5.2.8(@types/node@20.11.30):
+    resolution: {integrity: sha512-OyZR+c1CE8yeHw5V5t59aXsUPPVTHMDjEZz8MgguLL/Q7NblxhZUlTu9xSPqlsUO/y+X7dlU05jdhvyycD55DA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
